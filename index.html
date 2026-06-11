@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexus IOT — Connecting the Physical World to the Cloud</title>
+  <meta name="description" content="Connexus IOT builds secure, reliable IoT platforms — smart sensing, real-time dashboards, and over-the-air device management." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>" />
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --bg-soft: #111729;
+      --card: #161d33;
+      --accent: #00d4ff;
+      --accent-2: #6c5ce7;
+      --text: #e8edf7;
+      --muted: #9aa6c0;
+      --border: #243049;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1140px, 92%); margin: 0 auto; }
+
+    /* Nav */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,14,26,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.3px; }
+    .logo .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+    .logo span.io { color: var(--accent); }
+    .nav-links { display: flex; gap: 30px; }
+    .nav-links a { color: var(--muted); font-size: 0.95rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #05080f; font-weight: 600; padding: 10px 20px; border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+
+    /* Hero */
+    .hero { position: relative; padding: 110px 0 90px; text-align: center; }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(600px circle at 50% -10%, rgba(0,212,255,0.18), transparent 60%),
+        radial-gradient(500px circle at 80% 30%, rgba(108,92,231,0.15), transparent 55%);
+      z-index: -1;
+    }
+    .badge {
+      display: inline-block; padding: 6px 16px; border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.8rem; color: var(--accent); margin-bottom: 24px;
+      background: var(--bg-soft);
+    }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.12; margin-bottom: 20px; }
+    .hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--muted); font-size: 1.15rem; max-width: 620px; margin: 0 auto 36px; }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #05080f;
+      font-weight: 600; padding: 14px 30px; border-radius: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.35); }
+    .btn-ghost { padding: 14px 30px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); transition: border-color 0.2s; }
+    .btn-ghost:hover { border-color: var(--accent); }
+
+    /* Stats */
+    .stats { display: flex; gap: 50px; justify-content: center; flex-wrap: wrap; margin-top: 64px; }
+    .stat strong { display: block; font-size: 2rem; color: var(--accent); }
+    .stat span { color: var(--muted); font-size: 0.9rem; }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-head { text-align: center; max-width: 640px; margin: 0 auto 54px; }
+    .section-head h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 14px; }
+    .section-head p { color: var(--muted); }
+
+    /* Features */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 30px;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--accent); }
+    .card .icon { font-size: 1.8rem; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 12px; background: var(--bg-soft); margin-bottom: 18px; }
+    .card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+
+    /* About */
+    .about { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    .about-grid p { color: var(--muted); margin-bottom: 16px; }
+    .about-visual {
+      aspect-ratio: 1; border-radius: 20px; border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(0,212,255,0.25), transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(108,92,231,0.25), transparent 50%),
+        var(--card);
+      display: grid; place-items: center; font-size: 5rem;
+    }
+
+    /* CTA / Contact */
+    .cta-band { text-align: center; }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(108,92,231,0.12));
+      border: 1px solid var(--border); border-radius: 24px; padding: 64px 30px;
+    }
+    .cta-box h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 14px; }
+    .cta-box p { color: var(--muted); margin-bottom: 28px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 40px 0; color: var(--muted); font-size: 0.9rem; }
+    .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo"><span class="dot"></span>Connexus<span class="io">IOT</span></div>
+        <div class="nav-links">
+          <a href="#solutions">Solutions</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="nav-cta">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="badge">● Now connecting devices worldwide</span>
+        <h1>Connecting the Physical World <br /><span class="grad">to the Cloud</span></h1>
+        <p>Connexus IOT delivers secure, reliable, end-to-end IoT solutions — from smart sensors on the edge to real-time dashboards in the cloud.</p>
+        <div class="hero-actions">
+          <a href="#solutions" class="btn-primary">Explore Solutions</a>
+          <a href="#contact" class="btn-ghost">Talk to Us</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>99.9%</strong><span>Uptime</span></div>
+          <div class="stat"><strong>10k+</strong><span>Devices Connected</span></div>
+          <div class="stat"><strong>&lt;50ms</strong><span>Edge Latency</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="solutions">
+      <div class="container">
+        <div class="section-head">
+          <h2>What We Build</h2>
+          <p>A complete platform to design, deploy, and manage connected devices at scale.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="icon">📡</div>
+            <h3>Smart Sensing</h3>
+            <p>Low-power edge nodes that capture temperature, motion, energy, and environmental data with precision.</p>
+          </div>
+          <div class="card">
+            <div class="icon">📊</div>
+            <h3>Real-Time Dashboards</h3>
+            <p>Live telemetry, alerts, and analytics in a clean web interface accessible from anywhere.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🔒</div>
+            <h3>Secure Connectivity</h3>
+            <p>End-to-end encryption, device authentication, and hardened firmware for peace of mind.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🔄</div>
+            <h3>OTA Updates</h3>
+            <p>Push firmware and configuration updates to your entire fleet over the air, safely and reliably.</p>
+          </div>
+          <div class="card">
+            <div class="icon">⚡</div>
+            <h3>Edge Intelligence</h3>
+            <p>Run logic and ML inference directly on devices to reduce latency and cloud costs.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🌐</div>
+            <h3>Scalable Cloud</h3>
+            <p>From one device to a million — our infrastructure grows with your deployment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container">
+        <div class="about-grid">
+          <div>
+            <div class="section-head" style="text-align:left; margin:0 0 24px;">
+              <h2>Built by Engineers,<br />for the Connected Era</h2>
+            </div>
+            <p>Connexus IOT was founded on a simple idea: connecting hardware to the cloud should be secure, simple, and dependable. We handle the hard parts — protocols, power, security, and scale — so you can focus on your product.</p>
+            <p>From firmware on the chip to dashboards in the browser, we own the full stack of your IoT journey.</p>
+            <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:10px;">Partner With Us</a>
+          </div>
+          <div class="about-visual">🛰️</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="cta-band">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Ready to Connect Your World?</h2>
+          <p>Let's build the next generation of your connected products together.</p>
+          <a href="mailto:hello@connexusiot.com" class="btn-primary">hello@connexusiot.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div class="logo" style="font-size:1.05rem;"><span class="dot"></span>Connexus<span class="io">IOT</span></div>
+        <div>© 2026 Connexus IOT. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
