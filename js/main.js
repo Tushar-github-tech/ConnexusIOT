@@ -228,14 +228,19 @@
     bms:    { on: true,  watts: 0 }
   };
 
-  function updateHud() {
+  function computeLoad() {
     var online = 1; /* BMS always on */
     var load = 0;
     ["light", "ac", "fan", "cooler", "mixer", "solar"].forEach(function (k) {
       if (devices[k].on) { online++; load += devices[k].watts; }
     });
-    setText("hudOnline", online + " / 7");
-    setText("hudLoad", String(Math.round(load)));
+    return { online: online, load: load };
+  }
+
+  function updateHud() {
+    var s = computeLoad();
+    setText("hudOnline", s.online + " / 7");
+    setText("hudLoad", String(Math.round(s.load)));
   }
 
   function setLed(key, on) {
@@ -430,6 +435,153 @@
   }
 
   /* =========================================================
+     7. POWER ON EVERY DEVICE (so the deck looks fully alive)
+     ========================================================= */
+  function powerOnAll() {
+    ["swLight", "swAc", "swFan", "swCooler", "swMixer", "swSolar"].forEach(function (id) {
+      var sw = byId(id);
+      if (sw && !sw.checked) {
+        sw.checked = true;
+        sw.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  /* =========================================================
+     8. ANALYTICS — live chart + Wink-style fault prediction
+     A genuine real-time demo: streams device telemetry, runs a
+     rolling z-score anomaly model and renders a risk gauge.
+     ========================================================= */
+  function cssVar(name, fb) {
+    try {
+      var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fb;
+    } catch (e) { return fb; }
+  }
+  function hexA(hex, a) {
+    hex = (hex || "").trim();
+    if (hex.charAt(0) === "#" && hex.length === 7) {
+      var r = parseInt(hex.slice(1, 3), 16),
+          g = parseInt(hex.slice(3, 5), 16),
+          b = parseInt(hex.slice(5, 7), 16);
+      return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    }
+    return hex;
+  }
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+
+  function startAnalytics() {
+    var canvas = byId("anChart");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var box = canvas.parentElement;
+    var faultArc = byId("faultArc");
+
+    var W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+    function resize() {
+      W = box.clientWidth || 560;
+      H = box.clientHeight || 200;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    var N = 52, POWER_MAX = 6; /* kW full-scale */
+    var powerS = [], healthS = [], buf = [];
+    for (var i = 0; i < N; i++) { powerS.push(0); healthS.push(0.34); }
+    var risk = 0, anomaly = 0;
+    var accent = cssVar("--accent", "#0891b2");
+    var accent2 = cssVar("--accent2", "#2563eb");
+    var C = 2 * Math.PI * 54;
+
+    function tick() {
+      var kw = computeLoad().load / 1000;
+      var stress = clamp01(kw / POWER_MAX);
+
+      if (anomaly > 0) anomaly--;
+      else if (Math.random() < 0.05) anomaly = 5 + Math.floor(Math.random() * 7);
+      var spike = anomaly > 0 ? 0.30 : 0;
+
+      var metric = clamp01(0.30 + stress * 0.35 + (Math.random() - 0.5) * 0.07 + spike);
+
+      /* rolling mean / std over a window → z-score (the "Wink" anomaly model) */
+      buf.push(metric);
+      if (buf.length > 30) buf.shift();
+      var mean = 0, j;
+      for (j = 0; j < buf.length; j++) mean += buf[j];
+      mean /= buf.length;
+      var varc = 0;
+      for (j = 0; j < buf.length; j++) { var d = buf[j] - mean; varc += d * d; }
+      varc /= Math.max(1, buf.length - 1);
+      var sd = Math.sqrt(varc) || 0.0001;
+      var z = (metric - mean) / sd;
+
+      var target = clamp01(Math.max(0, z) / 3 * 0.6 + metric * 0.5) * 100;
+      risk += (target - risk) * 0.2;
+
+      powerS.push(kw); powerS.shift();
+      healthS.push(metric); healthS.shift();
+
+      draw();
+      updateGauge();
+    }
+
+    function drawSeries(arr, max, color, fill) {
+      var n = arr.length, step = W / (n - 1), i, x, y;
+      ctx.beginPath();
+      for (i = 0; i < n; i++) {
+        x = i * step;
+        y = H - clamp01(arr[i] / max) * (H * 0.9) - 6;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.lineJoin = "round";
+      ctx.stroke();
+      if (fill) {
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        var grd = ctx.createLinearGradient(0, 0, 0, H);
+        grd.addColorStop(0, hexA(color, 0.20));
+        grd.addColorStop(1, hexA(color, 0));
+        ctx.fillStyle = grd;
+        ctx.fill();
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.strokeStyle = "rgba(15,23,42,0.06)";
+      ctx.lineWidth = 1;
+      for (var g = 1; g < 4; g++) {
+        var y = H * g / 4;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+      drawSeries(powerS, POWER_MAX, accent, true);
+      drawSeries(healthS, 1, accent2, false);
+    }
+    function updateGauge() {
+      var r = Math.round(risk);
+      setText("faultPct", r + "%");
+      var label = r < 30 ? "Healthy" : r < 65 ? "Watch" : "Fault risk";
+      setText("faultLabel", label);
+      var col = r < 30 ? cssVar("--success", "#10b981")
+              : r < 65 ? "#f59e0b"
+              : cssVar("--danger", "#ef4444");
+      if (faultArc) {
+        faultArc.style.strokeDasharray = C.toFixed(1);
+        faultArc.style.strokeDashoffset = (C * (1 - r / 100)).toFixed(1);
+        faultArc.style.stroke = col;
+      }
+      var num = byId("faultPct"); if (num) num.style.color = col;
+      var lab = byId("faultLabel"); if (lab) lab.style.color = col;
+    }
+
+    tick();
+    setInterval(tick, 1100);
+  }
+
+  /* =========================================================
      BOOT
      ========================================================= */
   document.addEventListener("DOMContentLoaded", function () {
@@ -446,6 +598,8 @@
     setupMixer();
     setupSolar();
     setupBms();
+    powerOnAll();
+    startAnalytics();
     startUptime();
     updateHud();
   });

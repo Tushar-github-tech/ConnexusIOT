@@ -25,8 +25,9 @@
   </a>
   <nav class="nav-links" id="navLinks">
     <a href="#deck">Live Demo</a>
+    <a href="#connectivity">Connectivity</a>
+    <a href="#analytics">Analytics</a>
     <a href="#features">Features</a>
-    <a href="#how">How It Works</a>
     <a href="#security">Security</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -48,6 +49,9 @@
         and battery systems into a single secure dashboard — at the
         <strong>lowest maintenance cost in the industry</strong>.
       </p>
+      <div class="conn-chips">
+        <span>📶 Wi-Fi</span><span>🔵 Bluetooth LE</span><span>🕸️ Self-healing mesh</span><span>🧠 AI fault prediction</span>
+      </div>
       <div class="hero-actions">
         <a href="#deck" class="btn btn-solid">Try the live demo</a>
         <a href="#contact" class="btn btn-ghost">Talk to us</a>
@@ -256,6 +260,95 @@
   </div>
 </section>
 
+<!-- ================= CONNECTIVITY ================= -->
+<section class="section" id="connectivity">
+  <div class="sec-head reveal">
+    <span class="sec-tag">Connectivity</span>
+    <h2>Wi-Fi, Bluetooth &amp; a <span class="grad-text">self-healing mesh</span></h2>
+    <p>Control every device over Wi-Fi or Bluetooth LE. Nodes relay for each other in a mesh, so coverage and reliability grow as you add more.</p>
+  </div>
+  <div class="conn-grid reveal">
+    <div class="conn-card"><div class="conn-ico">📶</div><h3>Wi-Fi control</h3><p>Cloud &amp; local-network control with instant status sync from anywhere.</p></div>
+    <div class="conn-card"><div class="conn-ico">🔵</div><h3>Bluetooth LE control</h3><p>Low-power, near-instant local control — works even with no internet.</p></div>
+    <div class="conn-card"><div class="conn-ico">🕸️</div><h3>BLE mesh</h3><p>Devices hop signals to each other for whole-home coverage, no new wiring.</p></div>
+    <div class="conn-card"><div class="conn-ico">🛜</div><h3>Wi-Fi mesh</h3><p>High-bandwidth backbone that automatically self-heals if a node drops.</p></div>
+  </div>
+  <div class="mesh-viz reveal" aria-hidden="true">
+    <svg viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet">
+      <g class="mesh-links" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 6">
+        <line x1="300" y1="110" x2="90"  y2="46"/>
+        <line x1="300" y1="110" x2="210" y2="36"/>
+        <line x1="300" y1="110" x2="390" y2="36"/>
+        <line x1="300" y1="110" x2="510" y2="50"/>
+        <line x1="300" y1="110" x2="120" y2="180"/>
+        <line x1="300" y1="110" x2="300" y2="196"/>
+        <line x1="300" y1="110" x2="480" y2="180"/>
+        <line x1="90"  y1="46"  x2="210" y2="36"/>
+        <line x1="210" y1="36"  x2="390" y2="36"/>
+        <line x1="390" y1="36"  x2="510" y2="50"/>
+        <line x1="120" y1="180" x2="300" y2="196"/>
+        <line x1="300" y1="196" x2="480" y2="180"/>
+      </g>
+      <circle cx="300" cy="110" r="10" fill="currentColor" opacity="0.25">
+        <animate attributeName="r" values="12;40" dur="2.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.35;0" dur="2.6s" repeatCount="indefinite"/>
+      </circle>
+      <g class="mesh-nodes">
+        <circle class="mesh-node" cx="90"  cy="46"  r="15"/><text x="90"  y="51"  class="mesh-emoji">💡</text>
+        <circle class="mesh-node" cx="210" cy="36"  r="15"/><text x="210" y="41"  class="mesh-emoji">❄️</text>
+        <circle class="mesh-node" cx="390" cy="36"  r="15"/><text x="390" y="41"  class="mesh-emoji">🌀</text>
+        <circle class="mesh-node" cx="510" cy="50"  r="15"/><text x="510" y="55"  class="mesh-emoji">☀️</text>
+        <circle class="mesh-node" cx="120" cy="180" r="15"/><text x="120" y="185" class="mesh-emoji">🔋</text>
+        <circle class="mesh-node" cx="480" cy="180" r="15"/><text x="480" y="185" class="mesh-emoji">🫙</text>
+        <circle class="mesh-node" cx="300" cy="196" r="15"/><text x="300" y="201" class="mesh-emoji">📱</text>
+        <circle class="mesh-node hub" cx="300" cy="110" r="19"/><text x="300" y="116" class="mesh-emoji hub-emoji">⬡</text>
+      </g>
+    </svg>
+    <span class="mesh-cap">Live mesh — self-healing &amp; encrypted</span>
+  </div>
+</section>
+
+<!-- ================= ANALYTICS & AI ================= -->
+<section class="section" id="analytics">
+  <div class="sec-head reveal">
+    <span class="sec-tag">Analytics &amp; AI</span>
+    <h2>Real-time insight with <span class="grad-text">fault prediction</span></h2>
+    <p>Cloud and on-device analytics catch problems before they happen — powered by Wink ML pipelines.</p>
+  </div>
+
+  <div class="analytics-grid reveal">
+    <div class="an-card chart-card">
+      <div class="an-head">
+        <h3>Live telemetry</h3>
+        <span class="an-live"><span class="dot-live"></span> streaming</span>
+      </div>
+      <div class="chart-box"><canvas id="anChart"></canvas></div>
+      <div class="an-legend">
+        <span class="lg lg-p">Power (kW)</span>
+        <span class="lg lg-h">Thermal / vibration index</span>
+      </div>
+    </div>
+
+    <div class="an-card gauge-card">
+      <h3>Fault risk</h3>
+      <div class="gauge">
+        <svg viewBox="0 0 140 140">
+          <circle class="g-track" cx="70" cy="70" r="54"></circle>
+          <circle class="g-val" id="faultArc" cx="70" cy="70" r="54"></circle>
+        </svg>
+        <div class="gauge-num"><b id="faultPct">0%</b><span id="faultLabel">Healthy</span></div>
+      </div>
+      <div class="gauge-meta" id="faultMeta">Wink anomaly pipeline · updating live</div>
+      <a class="wink-badge" href="https://composer.winkjs.org/" target="_blank" rel="noopener noreferrer">⚙️ Built with Wink Composer ↗</a>
+    </div>
+  </div>
+
+  <div class="an-split reveal">
+    <div class="an-mini"><div class="an-mini-ico">☁️</div><div><h4>Cloud analytics</h4><p>Long-term trends, multi-site dashboards, cost reports and alerts across your whole fleet.</p></div></div>
+    <div class="an-mini"><div class="an-mini-ico">🖥️</div><div><h4>Local (edge) analytics</h4><p>Fault prediction runs on the hub in real time — no internet required, full privacy.</p></div></div>
+  </div>
+</section>
+
 <!-- ================= FEATURES ================= -->
 <section class="section" id="features">
   <div class="sec-head reveal">
@@ -267,7 +360,7 @@
     <div class="feat reveal"><div class="feat-ico">💸</div><h3>Lowest maintenance cost</h3><p>Self-healing connections and predictive alerts cut service visits by up to 70% — the lowest running cost in the industry.</p></div>
     <div class="feat reveal"><div class="feat-ico">⚡</div><h3>Instant response</h3><p>Decisions happen on the hub in under 50&nbsp;ms. Your automations keep running even if the internet drops.</p></div>
     <div class="feat reveal"><div class="feat-ico">☀️</div><h3>Solar &amp; power ready</h3><p>Native control of solar inverters, regular inverters and battery packs. Track generation and switch modes anytime.</p></div>
-    <div class="feat reveal"><div class="feat-ico">📊</div><h3>Energy insights</h3><p>Per-device wattage, daily cost reports and anomaly alerts — know exactly which appliance drives your bill.</p></div>
+    <div class="feat reveal"><div class="feat-ico">📊</div><h3>Energy &amp; AI insights</h3><p>Per-device wattage, daily cost reports and AI fault prediction — spot a failing appliance before it actually fails.</p></div>
     <div class="feat reveal"><div class="feat-ico">🔌</div><h3>Works with what you own</h3><p>Lights, ACs, coolers, fans, mixer grinders, pumps — if it has a plug, Connexus can control it.</p></div>
   </div>
 </section>
