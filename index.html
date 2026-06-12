@@ -1,244 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connexus IOT — Connecting the Physical World to the Cloud</title>
-  <meta name="description" content="Connexus IOT builds secure, reliable IoT platforms — smart sensing, real-time dashboards, and over-the-air device management." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔗</text></svg>" />
-  <style>
-    :root {
-      --bg: #0a0e1a;
-      --bg-soft: #111729;
-      --card: #161d33;
-      --accent: #00d4ff;
-      --accent-2: #6c5ce7;
-      --text: #e8edf7;
-      --muted: #9aa6c0;
-      --border: #243049;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(1140px, 92%); margin: 0 auto; }
-
-    /* Nav */
-    header {
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(10,14,26,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.3px; }
-    .logo .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
-    .logo span.io { color: var(--accent); }
-    .nav-links { display: flex; gap: 30px; }
-    .nav-links a { color: var(--muted); font-size: 0.95rem; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #05080f; font-weight: 600; padding: 10px 20px; border-radius: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
-
-    /* Hero */
-    .hero { position: relative; padding: 110px 0 90px; text-align: center; }
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(600px circle at 50% -10%, rgba(0,212,255,0.18), transparent 60%),
-        radial-gradient(500px circle at 80% 30%, rgba(108,92,231,0.15), transparent 55%);
-      z-index: -1;
-    }
-    .badge {
-      display: inline-block; padding: 6px 16px; border: 1px solid var(--border);
-      border-radius: 999px; font-size: 0.8rem; color: var(--accent); margin-bottom: 24px;
-      background: var(--bg-soft);
-    }
-    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.12; margin-bottom: 20px; }
-    .hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero p { color: var(--muted); font-size: 1.15rem; max-width: 620px; margin: 0 auto 36px; }
-    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #05080f;
-      font-weight: 600; padding: 14px 30px; border-radius: 10px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.35); }
-    .btn-ghost { padding: 14px 30px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); transition: border-color 0.2s; }
-    .btn-ghost:hover { border-color: var(--accent); }
-
-    /* Stats */
-    .stats { display: flex; gap: 50px; justify-content: center; flex-wrap: wrap; margin-top: 64px; }
-    .stat strong { display: block; font-size: 2rem; color: var(--accent); }
-    .stat span { color: var(--muted); font-size: 0.9rem; }
-
-    /* Sections */
-    section { padding: 80px 0; }
-    .section-head { text-align: center; max-width: 640px; margin: 0 auto 54px; }
-    .section-head h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 14px; }
-    .section-head p { color: var(--muted); }
-
-    /* Features */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 30px;
-      transition: transform 0.25s, border-color 0.25s;
-    }
-    .card:hover { transform: translateY(-6px); border-color: var(--accent); }
-    .card .icon { font-size: 1.8rem; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 12px; background: var(--bg-soft); margin-bottom: 18px; }
-    .card h3 { font-size: 1.2rem; margin-bottom: 10px; }
-    .card p { color: var(--muted); font-size: 0.95rem; }
-
-    /* About */
-    .about { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-    .about-grid p { color: var(--muted); margin-bottom: 16px; }
-    .about-visual {
-      aspect-ratio: 1; border-radius: 20px; border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 30% 30%, rgba(0,212,255,0.25), transparent 50%),
-        radial-gradient(circle at 70% 70%, rgba(108,92,231,0.25), transparent 50%),
-        var(--card);
-      display: grid; place-items: center; font-size: 5rem;
-    }
-
-    /* CTA / Contact */
-    .cta-band { text-align: center; }
-    .cta-box {
-      background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(108,92,231,0.12));
-      border: 1px solid var(--border); border-radius: 24px; padding: 64px 30px;
-    }
-    .cta-box h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 14px; }
-    .cta-box p { color: var(--muted); margin-bottom: 28px; }
-
-    /* Footer */
-    footer { border-top: 1px solid var(--border); padding: 40px 0; color: var(--muted); font-size: 0.9rem; }
-    .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-
-    @media (max-width: 760px) {
-      .nav-links { display: none; }
-      .about-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexus IoT — Smart control for every device</title>
+<meta name="description" content="Connexus IoT: control lights, ACs, coolers, fans, solar inverters and BMS from one secure app — with the lowest maintenance cost in the industry.">
+<meta name="theme-color" content="#0891b2">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo"><span class="dot"></span>Connexus<span class="io">IOT</span></div>
-        <div class="nav-links">
-          <a href="#solutions">Solutions</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <a href="#contact" class="nav-cta">Get Started</a>
-      </nav>
-    </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <span class="badge">● Now connecting devices worldwide</span>
-        <h1>Connecting the Physical World <br /><span class="grad">to the Cloud</span></h1>
-        <p>Connexus IOT delivers secure, reliable, end-to-end IoT solutions — from smart sensors on the edge to real-time dashboards in the cloud.</p>
-        <div class="hero-actions">
-          <a href="#solutions" class="btn-primary">Explore Solutions</a>
-          <a href="#contact" class="btn-ghost">Talk to Us</a>
-        </div>
-        <div class="stats">
-          <div class="stat"><strong>99.9%</strong><span>Uptime</span></div>
-          <div class="stat"><strong>10k+</strong><span>Devices Connected</span></div>
-          <div class="stat"><strong>&lt;50ms</strong><span>Edge Latency</span></div>
-        </div>
+<!-- soft aurora background -->
+<div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Connexus IoT home">
+    <img id="brandLogo" class="brand-logo" src="assets/logo.svg" alt="logo">
+    <span class="brand-text"><span id="brandName">Connexus</span>&nbsp;<em id="brandSuffix">IoT</em></span>
+  </a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#deck">Live Demo</a>
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#security">Security</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a href="#contact" class="btn btn-solid btn-sm nav-cta">Get Started</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-chip"><span class="dot-live"></span> Live device control, in real time</div>
+      <h1 class="hero-title">One app to run your <span class="grad-text">entire home &amp; facility</span></h1>
+      <p class="typing-wrap"><span id="typing"></span><span class="caret"></span></p>
+      <p class="hero-desc">
+        Connexus connects your lights, ACs, coolers, fans, mixer grinders, solar inverters
+        and battery systems into a single secure dashboard — at the
+        <strong>lowest maintenance cost in the industry</strong>.
+      </p>
+      <div class="hero-actions">
+        <a href="#deck" class="btn btn-solid">Try the live demo</a>
+        <a href="#contact" class="btn btn-ghost">Talk to us</a>
       </div>
-    </section>
-
-    <section id="solutions">
-      <div class="container">
-        <div class="section-head">
-          <h2>What We Build</h2>
-          <p>A complete platform to design, deploy, and manage connected devices at scale.</p>
-        </div>
-        <div class="grid">
-          <div class="card">
-            <div class="icon">📡</div>
-            <h3>Smart Sensing</h3>
-            <p>Low-power edge nodes that capture temperature, motion, energy, and environmental data with precision.</p>
-          </div>
-          <div class="card">
-            <div class="icon">📊</div>
-            <h3>Real-Time Dashboards</h3>
-            <p>Live telemetry, alerts, and analytics in a clean web interface accessible from anywhere.</p>
-          </div>
-          <div class="card">
-            <div class="icon">🔒</div>
-            <h3>Secure Connectivity</h3>
-            <p>End-to-end encryption, device authentication, and hardened firmware for peace of mind.</p>
-          </div>
-          <div class="card">
-            <div class="icon">🔄</div>
-            <h3>OTA Updates</h3>
-            <p>Push firmware and configuration updates to your entire fleet over the air, safely and reliably.</p>
-          </div>
-          <div class="card">
-            <div class="icon">⚡</div>
-            <h3>Edge Intelligence</h3>
-            <p>Run logic and ML inference directly on devices to reduce latency and cloud costs.</p>
-          </div>
-          <div class="card">
-            <div class="icon">🌐</div>
-            <h3>Scalable Cloud</h3>
-            <p>From one device to a million — our infrastructure grows with your deployment.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="about">
-      <div class="container">
-        <div class="about-grid">
-          <div>
-            <div class="section-head" style="text-align:left; margin:0 0 24px;">
-              <h2>Built by Engineers,<br />for the Connected Era</h2>
-            </div>
-            <p>Connexus IOT was founded on a simple idea: connecting hardware to the cloud should be secure, simple, and dependable. We handle the hard parts — protocols, power, security, and scale — so you can focus on your product.</p>
-            <p>From firmware on the chip to dashboards in the browser, we own the full stack of your IoT journey.</p>
-            <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:10px;">Partner With Us</a>
-          </div>
-          <div class="about-visual">🛰️</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="cta-band">
-      <div class="container">
-        <div class="cta-box">
-          <h2>Ready to Connect Your World?</h2>
-          <p>Let's build the next generation of your connected products together.</p>
-          <a href="mailto:hello@connexusiot.com" class="btn-primary">hello@connexusiot.com</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="foot-grid">
-        <div class="logo" style="font-size:1.05rem;"><span class="dot"></span>Connexus<span class="io">IOT</span></div>
-        <div>© 2026 Connexus IOT. All rights reserved.</div>
+      <div class="hero-stats">
+        <div class="hstat"><b class="counter" data-target="99.9" data-decimals="1">0</b><span>% Uptime</span></div>
+        <div class="hstat"><b>&lt;<span class="counter" data-target="50">0</span>ms</b><span>Response</span></div>
+        <div class="hstat"><b><span class="counter" data-target="70">0</span>%</b><span>Lower upkeep</span></div>
+        <div class="hstat"><b>256-bit</b><span>Encryption</span></div>
       </div>
     </div>
-  </footer>
+
+    <!-- clean hub visual -->
+    <div class="hub" aria-hidden="true">
+      <svg class="hub-lines" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet">
+        <g stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 6" class="hub-flow">
+          <line x1="180" y1="180" x2="60"  y2="70"/>
+          <line x1="180" y1="180" x2="300" y2="70"/>
+          <line x1="180" y1="180" x2="34"  y2="190"/>
+          <line x1="180" y1="180" x2="326" y2="190"/>
+          <line x1="180" y1="180" x2="80"  y2="306"/>
+          <line x1="180" y1="180" x2="280" y2="306"/>
+        </g>
+      </svg>
+      <div class="hub-ring r1"></div>
+      <div class="hub-ring r2"></div>
+      <div class="hub-core"><img src="assets/logo.svg" alt="" class="hub-logo" id="holoLogo"></div>
+      <span class="pill" style="--x:60px;--y:70px">💡 Lights</span>
+      <span class="pill" style="--x:300px;--y:70px">❄️ AC</span>
+      <span class="pill" style="--x:34px;--y:190px">🌀 Fan</span>
+      <span class="pill" style="--x:326px;--y:190px">☀️ Solar</span>
+      <span class="pill" style="--x:80px;--y:306px">🔋 BMS</span>
+      <span class="pill" style="--x:280px;--y:306px">🫙 Mixer</span>
+    </div>
+  </div>
+  <a href="#deck" class="scroll-hint" aria-label="Scroll to demo"><span></span></a>
+</section>
+
+<!-- ================= LIVE CONTROL DECK ================= -->
+<section class="section" id="deck">
+  <div class="sec-head reveal">
+    <span class="sec-tag">Live Demo</span>
+    <h2>Your devices, <span class="grad-text">one dashboard</span></h2>
+    <p>This is a real, working simulation of the Connexus app. Tap any control — it responds instantly.</p>
+  </div>
+
+  <!-- status strip -->
+  <div class="hud reveal">
+    <div class="hud-cell"><span class="hud-label">Devices online</span><b id="hudOnline">0 / 7</b></div>
+    <div class="hud-cell"><span class="hud-label">Total load</span><b><span id="hudLoad">0</span> W</b></div>
+    <div class="hud-cell"><span class="hud-label">Connection</span><b class="ok">🔒 256-bit secure</b></div>
+    <div class="hud-cell"><span class="hud-label">Session uptime</span><b id="hudUptime">00:00:00</b></div>
+  </div>
+
+  <div class="deck-grid">
+
+    <!-- SMART LIGHT -->
+    <article class="dev reveal" id="card-light">
+      <div class="dev-top">
+        <h3>Smart Light</h3>
+        <label class="switch"><input type="checkbox" id="swLight" aria-label="Toggle smart light"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage">
+        <div class="bulb" id="bulb">
+          <div class="bulb-glow" id="bulbGlow"></div>
+          <svg viewBox="0 0 64 64" class="bulb-svg"><path d="M32 6c-11 0-19 8.4-19 18.6 0 6.8 3.6 11.2 6.7 15 2 2.4 3.3 5 3.8 7.4h17c.5-2.4 1.8-5 3.8-7.4 3.1-3.8 6.7-8.2 6.7-15C51 14.4 43 6 32 6z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M25 53h14M27 58h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      <div class="dev-ctrl">
+        <label>Brightness <input type="range" id="lightBright" min="10" max="100" value="80" aria-label="Brightness"></label>
+        <label>Color <input type="range" id="lightHue" min="0" max="360" value="48" class="hue" aria-label="Light color"></label>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="light"></span><span id="lightWatt">0 W</span></footer>
+    </article>
+
+    <!-- AC -->
+    <article class="dev reveal" id="card-ac">
+      <div class="dev-top">
+        <h3>Air Conditioner</h3>
+        <label class="switch"><input type="checkbox" id="swAc" aria-label="Toggle air conditioner"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage ac-stage">
+        <div class="ac-unit">
+          <div class="ac-vent"></div>
+          <div class="ac-display" id="acTemp">24°C</div>
+        </div>
+        <div class="cold-waves" id="coldWaves"><i></i><i></i><i></i></div>
+      </div>
+      <div class="dev-ctrl ctrl-row">
+        <button class="step-btn" id="acMinus" aria-label="Temperature down">−</button>
+        <span class="ctrl-val" id="acTempLabel">24°C</span>
+        <button class="step-btn" id="acPlus" aria-label="Temperature up">+</button>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="ac"></span><span id="acWatt">0 W</span></footer>
+    </article>
+
+    <!-- FAN -->
+    <article class="dev reveal" id="card-fan">
+      <div class="dev-top">
+        <h3>Ceiling Fan</h3>
+        <label class="switch"><input type="checkbox" id="swFan" aria-label="Toggle ceiling fan"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage">
+        <svg viewBox="0 0 64 64" class="fan-svg" id="fanSvg">
+          <g class="fan-blades" id="fanBlades">
+            <path d="M32 32 C20 10 38 6 40 16 C41 22 36 28 32 32Z" fill="currentColor" opacity=".85"/>
+            <path d="M32 32 C54 20 58 38 48 40 C42 41 36 36 32 32Z" fill="currentColor" opacity=".85"/>
+            <path d="M32 32 C44 54 26 58 24 48 C23 42 28 36 32 32Z" fill="currentColor" opacity=".85"/>
+            <path d="M32 32 C10 44 6 26 16 24 C22 23 28 28 32 32Z" fill="currentColor" opacity=".85"/>
+          </g>
+          <circle cx="32" cy="32" r="5" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="dev-ctrl">
+        <label>Speed <input type="range" id="fanSpeed" min="1" max="5" value="3" aria-label="Fan speed"></label>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="fan"></span><span id="fanWatt">0 W</span></footer>
+    </article>
+
+    <!-- AIR COOLER -->
+    <article class="dev reveal" id="card-cooler">
+      <div class="dev-top">
+        <h3>Air Cooler</h3>
+        <label class="switch"><input type="checkbox" id="swCooler" aria-label="Toggle air cooler"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage">
+        <div class="cooler" id="coolerBox">
+          <div class="cooler-grill"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="water" id="water"></div>
+        </div>
+      </div>
+      <div class="dev-ctrl">
+        <label>Pump &amp; Swing <input type="range" id="coolerSpeed" min="1" max="3" value="2" aria-label="Cooler pump and swing"></label>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="cooler"></span><span id="coolerWatt">0 W</span></footer>
+    </article>
+
+    <!-- MIXER GRINDER -->
+    <article class="dev reveal" id="card-mixer">
+      <div class="dev-top">
+        <h3>Mixer Grinder</h3>
+        <label class="switch"><input type="checkbox" id="swMixer" aria-label="Toggle mixer grinder"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage">
+        <div class="mixer" id="mixerBox">
+          <div class="jar">
+            <svg viewBox="0 0 40 40" class="blade-svg"><g id="mixerBlades"><path d="M20 20 L34 14 M20 20 L6 26 M20 20 L26 34 M20 20 L14 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></g><circle cx="20" cy="20" r="3.5" fill="currentColor"/></svg>
+          </div>
+          <div class="mixer-base"></div>
+        </div>
+      </div>
+      <div class="dev-ctrl ctrl-row seg" id="mixerSeg" role="group" aria-label="Mixer speed">
+        <button class="seg-btn active" data-speed="1">1</button>
+        <button class="seg-btn" data-speed="2">2</button>
+        <button class="seg-btn" data-speed="3">3</button>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="mixer"></span><span id="mixerWatt">0 W</span></footer>
+    </article>
+
+    <!-- SOLAR / POWER INVERTER -->
+    <article class="dev reveal" id="card-solar">
+      <div class="dev-top">
+        <h3>Solar Inverter</h3>
+        <label class="switch"><input type="checkbox" id="swSolar" aria-label="Toggle solar inverter"><span class="slider"></span></label>
+      </div>
+      <div class="dev-stage solar-stage">
+        <svg viewBox="0 0 200 80" class="flow-svg">
+          <g class="sun" id="sunIco"><circle cx="24" cy="26" r="10" fill="none" stroke="currentColor" stroke-width="2.5"/><g stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M24 8v6M24 38v6M6 26h6M36 26h6M11 13l4 4M33 35l4 4M37 13l-4 4M15 35l-4 4"/></g></g>
+          <path id="flowPath" d="M44 26 H92 V54 H198" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 8" class="flow-line"/>
+          <g transform="translate(96,30)"><rect x="0" y="0" width="34" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M10 12h14M17 5v14" stroke="currentColor" stroke-width="2" opacity=".6"/></g>
+          <g transform="translate(168,40)"><path d="M14 0 L28 14 H24 V28 H4 V14 H0 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></g>
+        </svg>
+        <div class="solar-readout"><b id="solarWattsBig">0.00</b> kW generating</div>
+      </div>
+      <div class="dev-ctrl ctrl-row seg" id="solarSeg" role="group" aria-label="Power source mode">
+        <button class="seg-btn active" data-mode="solar">Solar</button>
+        <button class="seg-btn" data-mode="hybrid">Hybrid</button>
+        <button class="seg-btn" data-mode="grid">Grid</button>
+      </div>
+      <footer class="dev-foot"><span class="led" data-led="solar"></span><span id="solarWatt">0 W</span></footer>
+    </article>
+
+    <!-- BMS -->
+    <article class="dev reveal dev-wide" id="card-bms">
+      <div class="dev-top">
+        <h3>Battery Management System</h3>
+        <span class="bms-badge" id="bmsState">● Live monitoring</span>
+      </div>
+      <div class="bms-body">
+        <div class="battery">
+          <div class="battery-cap"></div>
+          <div class="battery-fill" id="batteryFill"></div>
+          <b class="battery-pct" id="batteryPct">0%</b>
+        </div>
+        <div class="bms-cells" id="bmsCells"></div>
+        <div class="bms-meta">
+          <div><span>Voltage</span><b id="bmsVolt">51.2 V</b></div>
+          <div><span>Current</span><b id="bmsAmp">12.4 A</b></div>
+          <div><span>Temp</span><b id="bmsTemp">31.5°C</b></div>
+          <div><span>Health</span><b class="ok">98%</b></div>
+        </div>
+      </div>
+      <footer class="dev-foot"><span class="led on" data-led="bms"></span><span>Cell-level telemetry · 24×7</span></footer>
+    </article>
+
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="section" id="features">
+  <div class="sec-head reveal">
+    <span class="sec-tag">Why Connexus</span>
+    <h2>Built for <span class="grad-text">real homes &amp; businesses</span></h2>
+  </div>
+  <div class="feat-grid">
+    <div class="feat reveal"><div class="feat-ico">🛡️</div><h3>Secured end-to-end</h3><p>256-bit AES encryption, signed firmware updates and per-device identity. Your home never talks to strangers.</p></div>
+    <div class="feat reveal"><div class="feat-ico">💸</div><h3>Lowest maintenance cost</h3><p>Self-healing connections and predictive alerts cut service visits by up to 70% — the lowest running cost in the industry.</p></div>
+    <div class="feat reveal"><div class="feat-ico">⚡</div><h3>Instant response</h3><p>Decisions happen on the hub in under 50&nbsp;ms. Your automations keep running even if the internet drops.</p></div>
+    <div class="feat reveal"><div class="feat-ico">☀️</div><h3>Solar &amp; power ready</h3><p>Native control of solar inverters, regular inverters and battery packs. Track generation and switch modes anytime.</p></div>
+    <div class="feat reveal"><div class="feat-ico">📊</div><h3>Energy insights</h3><p>Per-device wattage, daily cost reports and anomaly alerts — know exactly which appliance drives your bill.</p></div>
+    <div class="feat reveal"><div class="feat-ico">🔌</div><h3>Works with what you own</h3><p>Lights, ACs, coolers, fans, mixer grinders, pumps — if it has a plug, Connexus can control it.</p></div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section" id="how">
+  <div class="sec-head reveal">
+    <span class="sec-tag">How It Works</span>
+    <h2>Set up in <span class="grad-text">three simple steps</span></h2>
+  </div>
+  <div class="pipeline reveal">
+    <div class="pipe-node"><div class="pipe-ico">📱</div><b>1 · Open the app</b><span>iOS, Android &amp; web</span></div>
+    <div class="pipe-link"><i class="packet"></i></div>
+    <div class="pipe-node hub-node"><div class="pipe-ico">⬡</div><b>2 · Connect the hub</b><span>Plug in &amp; pair in minutes</span></div>
+    <div class="pipe-link"><i class="packet p2"></i></div>
+    <div class="pipe-node"><div class="pipe-ico">🏠</div><b>3 · Add your devices</b><span>Light · AC · Solar · BMS…</span></div>
+  </div>
+</section>
+
+<!-- ================= SECURITY ================= -->
+<section class="section" id="security">
+  <div class="sec-split">
+    <div class="shield-wrap reveal" aria-hidden="true">
+      <div class="shield-ring s1"></div>
+      <div class="shield-ring s2"></div>
+      <div class="shield">🔒</div>
+    </div>
+    <div class="sec-copy reveal">
+      <span class="sec-tag">Security</span>
+      <h2>Protected at <span class="grad-text">every layer</span></h2>
+      <ul class="sec-list">
+        <li><b>AES-256 + TLS 1.3</b> — every message encrypted end-to-end.</li>
+        <li><b>Per-device identity</b> — each device carries a unique signed certificate.</li>
+        <li><b>Signed updates</b> — tampered firmware simply won't run.</li>
+        <li><b>Local-first privacy</b> — your data lives on your hub, not our servers.</li>
+        <li><b>Automatic lockdown</b> — unusual traffic is isolated in milliseconds.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COST ================= -->
+<section class="section" id="cost">
+  <div class="sec-head reveal">
+    <span class="sec-tag">Running Cost</span>
+    <h2>The <span class="grad-text">lowest upkeep</span>, period</h2>
+  </div>
+  <div class="cost-wrap reveal">
+    <div class="cost-row"><span class="cost-name">Typical setups</span><div class="cost-bar"><i class="cb-other" style="--w:100%"></i></div><b>High</b></div>
+    <div class="cost-row"><span class="cost-name">Connexus</span><div class="cost-bar"><i class="cb-us" style="--w:30%"></i></div><b>Low</b></div>
+    <p class="cost-note">Self-healing connections + predictive alerts mean up to <b>70% lower</b> lifetime maintenance cost.</p>
+  </div>
+</section>
+
+<!-- ================= CTA / CONTACT ================= -->
+<section class="section" id="contact">
+  <div class="cta-box reveal">
+    <h2>Ready to get <span class="grad-text">started?</span></h2>
+    <p>Bring Connexus to your home or facility — we handle the setup from start to finish.</p>
+    <div class="hero-actions center">
+      <a href="#" id="mailBtn" class="btn btn-solid">Contact our team</a>
+      <a href="#deck" class="btn btn-ghost">Replay the demo</a>
+    </div>
+    <p class="contact-line">
+      <a id="emailLink" href="#"><span id="emailText">hello@connexusiot.com</span></a><span id="contactSep" hidden> · </span><span id="phoneText"></span>
+    </p>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="foot-brand">
+    <img src="assets/logo.svg" alt="" class="brand-logo" id="footLogo">
+    <span><span id="footName">Connexus</span> <em id="footSuffix">IoT</em></span>
+  </div>
+  <p>© <span id="year">2026</span> <span id="footCopy">Connexus IoT</span>. Connecting your world, securely.</p>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
