@@ -34,6 +34,6 @@ window.CONNEXUS_CONFIG = {
   },
 
   /* --- Contact --- */
-  contactEmail: "hello@connexusiot.com",
+  contactEmail: "support@connexusiot.com",
   contactPhone: ""        // leave "" to hide the phone number entirely
 };
