@@ -6,22 +6,25 @@
 <title>Connexus IoT — Smart control for every device</title>
 <meta name="description" content="Connexus IoT: control lights, ACs, coolers, fans, solar inverters and BMS from one secure app — with the lowest maintenance cost in the industry.">
 <meta name="theme-color" content="#ed7a23">
-<link rel="icon" type="image/png" href="assets/logo.png?v=7">
+<link rel="icon" type="image/png" href="assets/logo.png?v=8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
+
+<!-- interactive network background (reacts to cursor) -->
+<canvas id="mesh" aria-hidden="true"></canvas>
 
 <!-- soft aurora background -->
 <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
 
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
-  <a class="brand" href="#top" aria-label="Connexus IoT home">
-    <img class="brand-wordmark" src="assets/wordmark.png?v=7" alt="Connexus">
-    <em class="brand-iot" id="brandSuffix">IoT</em>
+  <a class="brand" href="#top" aria-label="Connexus home">
+    <img class="brand-wordmark" src="assets/wordmark.png?v=8" alt="Connexus">
+    <span class="brand-tag">Intelligent IoT Network</span>
   </a>
   <nav class="nav-links" id="navLinks">
     <a href="#deck">Live Demo</a>
@@ -78,7 +81,7 @@
       </svg>
       <div class="hub-ring r1"></div>
       <div class="hub-ring r2"></div>
-      <div class="hub-core"><img src="assets/logo.png?v=7" alt="" class="hub-logo" id="holoLogo"></div>
+      <div class="hub-core"><img src="assets/logo.png?v=8" alt="" class="hub-logo" id="holoLogo"></div>
       <span class="pill" style="--x:60px;--y:70px">💡 Lights</span>
       <span class="pill" style="--x:300px;--y:70px">❄️ AC</span>
       <span class="pill" style="--x:34px;--y:190px">🌀 Fan</span>
@@ -433,13 +436,13 @@
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <div class="foot-brand">
-    <img src="assets/logo.png?v=7" alt="" class="brand-logo" id="footLogo">
+    <img src="assets/logo.png?v=8" alt="" class="brand-logo" id="footLogo">
     <span><span id="footName">Connexus</span> <em id="footSuffix">IoT</em></span>
   </div>
   <p>© <span id="year">2026</span> <span id="footCopy">Connexus IoT</span>. Connecting your world, securely.</p>
 </footer>
 
-<script src="js/config.js?v=7"></script>
-<script src="js/main.js?v=7"></script>
+<script src="js/config.js?v=8"></script>
+<script src="js/main.js?v=8"></script>
 </body>
 </html>

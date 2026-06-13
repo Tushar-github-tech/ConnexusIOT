@@ -65,28 +65,37 @@
   function startMesh() {
     var canvas = byId("mesh");
     if (!canvas || !canvas.getContext) return;
-    var ctx = canvas.getContext("2d");
-    var pts = [], W = 0, H = 0, raf = null;
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
-    function accent(alpha) {
-      var c = (CFG.colors && CFG.colors.accent) || "#00e5ff";
-      var r = parseInt(c.slice(1, 3), 16), g = parseInt(c.slice(3, 5), 16), b = parseInt(c.slice(5, 7), 16);
-      return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+    var ctx = canvas.getContext("2d");
+    var pts = [], W = 0, H = 0, raf = null;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var mouse = { x: -9999, y: -9999, active: false };
+
+    var hex = (CFG.colors && CFG.colors.accent) || "#ed7a23";
+    function rgb(a) {
+      var r = parseInt(hex.slice(1, 3), 16),
+          g = parseInt(hex.slice(3, 5), 16),
+          b = parseInt(hex.slice(5, 7), 16);
+      return "rgba(" + r + "," + g + "," + b + "," + a + ")";
     }
 
     function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      var target = Math.min(110, Math.floor(W * H / 16000));
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var target = Math.min(120, Math.floor(W * H / 14000));
       pts = [];
       for (var i = 0; i < target; i++) {
         pts.push({
           x: Math.random() * W, y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          r: 1 + Math.random() * 1.6
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: 1 + Math.random() * 1.4
         });
       }
     }
@@ -94,15 +103,32 @@
     function step() {
       ctx.clearRect(0, 0, W, H);
       var linkDist = Math.min(150, W / 9);
+      var mouseDist = 180;
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
+
+        /* cursor gently parts the network around it */
+        if (mouse.active) {
+          var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+          var md = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (md < mouseDist && md > 0.01) {
+            var f = (mouseDist - md) / mouseDist * 0.7;
+            p.x += (mdx / md) * f; p.y += (mdy / md) * f;
+          }
+        }
+
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > W) p.vx *= -1;
         if (p.y < 0 || p.y > H) p.vy *= -1;
+        p.x = Math.max(0, Math.min(W, p.x));
+        p.y = Math.max(0, Math.min(H, p.y));
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = accent(0.55);
+        ctx.fillStyle = rgb(0.40);
         ctx.fill();
+
+        /* links between nearby nodes */
         for (var j = i + 1; j < pts.length; j++) {
           var q = pts[j];
           var dx = p.x - q.x, dy = p.y - q.y;
@@ -110,7 +136,20 @@
           if (d < linkDist) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = accent(0.13 * (1 - d / linkDist));
+            ctx.strokeStyle = rgb(0.09 * (1 - d / linkDist));
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
+        /* brighter links to the cursor */
+        if (mouse.active) {
+          var cdx = p.x - mouse.x, cdy = p.y - mouse.y;
+          var cd = Math.sqrt(cdx * cdx + cdy * cdy);
+          if (cd < mouseDist) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = rgb(0.30 * (1 - cd / mouseDist));
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -119,6 +158,14 @@
       raf = requestAnimationFrame(step);
     }
 
+    function onMove(e) {
+      var t = (e.touches && e.touches[0]) ? e.touches[0] : e;
+      mouse.x = t.clientX; mouse.y = t.clientY; mouse.active = true;
+    }
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("mouseout", function () { mouse.active = false; });
+    window.addEventListener("touchend", function () { mouse.active = false; });
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
       else if (!raf) raf = requestAnimationFrame(step);
