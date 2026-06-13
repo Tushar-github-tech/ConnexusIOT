@@ -558,7 +558,7 @@
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
       }
       drawSeries(powerS, POWER_MAX, accent, true);
-      drawSeries(healthS, 1, accent2, false);
+      drawSeries(healthS, 1, "#64748b", false);
     }
     function updateGauge() {
       var r = Math.round(risk);

@@ -14,7 +14,7 @@ window.CONNEXUS_CONFIG = {
   /* --- Brand identity --- */
   brandName:   "Connexus",          // first part of the name
   brandSuffix: "IoT",               // accent-colored second part
-  logoUrl:     "assets/logo.svg",   // path or URL to your logo image
+  logoUrl:     "assets/logo.png",   // path or URL to your logo image
   showLogo:    true,                // false = text only, no image
 
   /* --- Hero rotating taglines (types one after another, loops) --- */
@@ -27,8 +27,8 @@ window.CONNEXUS_CONFIG = {
 
   /* --- Theme colors --- */
   colors: {
-    accent:  "#0891b2",   // primary (teal/cyan)
-    accent2: "#2563eb",   // secondary (blue) — used in gradients
+    accent:  "#ed7a23",   // Connexus brand orange
+    accent2: "#f4a020",   // warm amber — used in gradients
     success: "#10b981",   // "online" green
     danger:  "#ef4444"    // alerts
   },

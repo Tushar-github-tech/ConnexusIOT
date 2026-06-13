@@ -57,6 +57,8 @@ em{font-style:normal}
 .brand-logo{width:34px;height:34px}
 .brand-text{font-family:var(--font-d);font-weight:700;font-size:1.14rem;letter-spacing:-.01em}
 .brand-text em,#footSuffix{color:var(--accent)}
+.brand-wordmark{height:26px;width:auto;display:block}
+.brand-iot{font-family:var(--font-d);font-weight:700;font-size:1rem;color:var(--accent);letter-spacing:.02em}
 .nav-links{display:flex;gap:26px}
 .nav-links a{font-weight:500;font-size:.95rem;color:var(--muted);position:relative;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
@@ -351,12 +353,12 @@ input[type=range].hue{background:linear-gradient(90deg,#ef4444,#eab308,#22c55e,#
   box-shadow:var(--shadow);
 }
 .cta-box h2{color:#fff}
-.cta-box .grad-text{background:linear-gradient(120deg,#38bdf8,#818cf8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta-box .grad-text{background:linear-gradient(120deg,#f9b24a,#ed7a23);-webkit-background-clip:text;background-clip:text;color:transparent}
 .cta-box p{color:#aab6c9;margin:14px 0 26px;font-size:1.06rem}
 .cta-box .btn-ghost{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff}
-.cta-box .btn-ghost:hover{border-color:#38bdf8;color:#38bdf8}
+.cta-box .btn-ghost:hover{border-color:#f4a020;color:#f4a020}
 .contact-line{margin-top:24px;font-size:.96rem;color:#aab6c9}
-.contact-line a{color:#38bdf8}
+.contact-line a{color:#f4a020}
 
 /* ---------- footer ---------- */
 .footer{
@@ -405,7 +407,7 @@ input[type=range].hue{background:linear-gradient(90deg,#ef4444,#eab308,#22c55e,#
 .lg{display:inline-flex;align-items:center;gap:8px}
 .lg::before{content:"";width:16px;height:3px;border-radius:3px;background:currentColor}
 .lg-p{color:var(--accent)}
-.lg-h{color:var(--accent2)}
+.lg-h{color:#64748b}
 .gauge-card{display:flex;flex-direction:column;align-items:center;text-align:center}
 .gauge-card h3{align-self:flex-start}
 .gauge{position:relative;width:160px;height:160px;margin-top:6px}
