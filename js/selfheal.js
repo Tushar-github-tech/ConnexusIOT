@@ -1,6 +1,6 @@
 /* =====================================================================
-   CONNEXUS — Self-Healing Mesh demo (self-contained)
-   Tap a node to drop it; the mesh re-routes around the gap.
+   CONNEXUS — Self-Healing Mesh demo (responsive)
+   Wide ellipse layout on desktop; portrait circular layout on phones.
    Isolated: SVG id "cxMeshSvg", pill class "cx-pill".
    ===================================================================== */
 (function(){
@@ -33,18 +33,26 @@
     {id:6,name:'Ceiling Fan',icon:'fan'}
   ];
   const N=devices.length;
-  const cx=600, cy=292, rx=468, ry=196, NR=33, HR=44;
-  devices.forEach((d,i)=>{ const a=(-90+i*(360/N))*Math.PI/180; d.x=cx+rx*Math.cos(a); d.y=cy+ry*Math.sin(a); });
-  function pos(id){ return id==='hub'?{x:cx,y:cy}:devices[id]; }
 
-  // edges: spokes + ring
+  /* layout switches between a wide ellipse and a portrait circle */
+  function makeLayout(){
+    const w=window.innerWidth;
+    if(w<=680){ return {VBW:660, VBH:780, cx:330, cy:392, rx:258, ry:300, NR:40, HR:48}; }
+    return {VBW:1200, VBH:600, cx:600, cy:292, rx:468, ry:196, NR:33, HR:44};
+  }
+  let L=makeLayout();
+  function layoutDevices(){
+    devices.forEach((d,i)=>{ const a=(-90+i*(360/N))*Math.PI/180; d.x=L.cx+L.rx*Math.cos(a); d.y=L.cy+L.ry*Math.sin(a); });
+  }
+  function pos(id){ return id==='hub'?{x:L.cx,y:L.cy}:devices[id]; }
+
+  // edges: spokes + ring (id-based, layout-independent)
   const edges=[];
   function ekey(a,b){ return [String(a),String(b)].sort().join('|'); }
   devices.forEach(d=>edges.push({a:'hub',b:d.id,key:ekey('hub',d.id)}));
   for(let i=0;i<N;i++) edges.push({a:i,b:(i+1)%N,key:ekey(i,(i+1)%N)});
   const edgeByKey={}; edges.forEach(e=>edgeByKey[e.key]=e);
 
-  // adjacency
   const adj={hub:devices.map(d=>d.id)};
   devices.forEach(d=>{ adj[d.id]=['hub',(d.id+1)%N,(d.id+6)%N]; });
 
@@ -53,7 +61,6 @@
   const downLinks=new Set();
   function nodeOn(id){ return id==='hub' || online[id]; }
   function linkUp(a,b){ return !downLinks.has(ekey(a,b)) && nodeOn(a) && nodeOn(b); }
-
   function route(start){
     if(!nodeOn(start)) return null;
     const q=[[start]], seen=new Set([start]);
@@ -65,70 +72,78 @@
     return null;
   }
 
-  // ---- build SVG ----
-  const defs=el("defs",{});
-  defs.innerHTML=`
-    <radialGradient id="meshHubG" cx="50%" cy="42%" r="65%"><stop offset="0" stop-color="#f49a52"/><stop offset="1" stop-color="#d8641a"/></radialGradient>
-    <radialGradient id="meshHalo"><stop offset="0" stop-color="#ed7a23" stop-opacity=".18"/><stop offset="1" stop-color="#ed7a23" stop-opacity="0"/></radialGradient>
-    <filter id="meshNsh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1c1b1a" flood-opacity="0.10"/></filter>
-    <filter id="meshHsh" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="#c85f12" flood-opacity="0.34"/></filter>`;
-  svg.appendChild(defs);
+  // ---- (re)build the SVG for the current layout ----
+  let gEdges,gBreak,gPackets,gNodes;
+  function build(){
+    svg.setAttribute("viewBox",`0 0 ${L.VBW} ${L.VBH}`);
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    layoutDevices();
+    const cx=L.cx, cy=L.cy, NR=L.NR, HR=L.HR;
 
-  // background halo
-  svg.appendChild(el("circle",{cx:cx,cy:cy,r:240,fill:"url(#meshHalo)"}));
+    const defs=el("defs",{});
+    defs.innerHTML=`
+      <radialGradient id="meshHubG" cx="50%" cy="42%" r="65%"><stop offset="0" stop-color="#f49a52"/><stop offset="1" stop-color="#d8641a"/></radialGradient>
+      <radialGradient id="meshHalo"><stop offset="0" stop-color="#ed7a23" stop-opacity=".18"/><stop offset="1" stop-color="#ed7a23" stop-opacity="0"/></radialGradient>
+      <filter id="meshNsh" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1c1b1a" flood-opacity="0.10"/></filter>
+      <filter id="meshHsh" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="#c85f12" flood-opacity="0.34"/></filter>`;
+    svg.appendChild(defs);
+    svg.appendChild(el("circle",{cx:cx,cy:cy,r:Math.max(L.rx,L.ry)*0.55,fill:"url(#meshHalo)"}));
 
-  const gEdges=el("g",{}); svg.appendChild(gEdges);
-  const gBreak=el("g",{}); svg.appendChild(gBreak);
-  const gPackets=el("g",{}); svg.appendChild(gPackets);
-  const gNodes=el("g",{}); svg.appendChild(gNodes);
+    gEdges=el("g",{}); svg.appendChild(gEdges);
+    gBreak=el("g",{}); svg.appendChild(gBreak);
+    gPackets=el("g",{}); svg.appendChild(gPackets);
+    gNodes=el("g",{}); svg.appendChild(gNodes);
 
-  // edge elements
-  edges.forEach(e=>{
-    const p1=pos(e.a), p2=pos(e.b);
-    const path=el("line",{x1:p1.x,y1:p1.y,x2:p2.x,y2:p2.y,class:"edge idle"});
-    gEdges.appendChild(path); e.el=path;
-    e.mid={x:(p1.x+p2.x)/2,y:(p1.y+p2.y)/2};
-  });
-
-  // hub
-  (function(){
-    const g=el("g",{});
-    [0,1,2].forEach(k=>{
-      const r=el("circle",{cx:cx,cy:cy,r:HR,fill:"none",stroke:"#ed7a23","stroke-width":2,opacity:0});
-      r.innerHTML=`<animate attributeName="r" values="${HR};${HR+70}" dur="2.6s" begin="${k*0.86}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.45;0" dur="2.6s" begin="${k*0.86}s" repeatCount="indefinite"/>`;
-      g.appendChild(r);
+    edges.forEach(e=>{
+      const p1=pos(e.a), p2=pos(e.b);
+      const path=el("line",{x1:p1.x,y1:p1.y,x2:p2.x,y2:p2.y,class:"edge idle"});
+      gEdges.appendChild(path); e.el=path;
+      e.mid={x:(p1.x+p2.x)/2,y:(p1.y+p2.y)/2};
     });
-    g.appendChild(el("circle",{cx:cx,cy:cy,r:HR,fill:"url(#meshHubG)",filter:"url(#meshHsh)"}));
-    const mg=el("g",{transform:`translate(${cx-15},${cy-15}) scale(1.25)`,stroke:"#fff","stroke-width":1.5,fill:"none","stroke-linecap":"round"});
-    mg.innerHTML='<circle cx="12" cy="6" r="2"/><circle cx="6" cy="16" r="2"/><circle cx="18" cy="16" r="2"/><path d="M10.5 7.6 7.4 14.3M13.5 7.6l3.1 6.7M8 16h8"/>';
-    g.appendChild(mg);
-    gNodes.appendChild(g);
-  })();
 
-  // device nodes
-  devices.forEach(d=>{
-    const g=el("g",{class:"node","data-id":d.id});
-    g.appendChild(el("circle",{cx:d.x,cy:d.y,r:NR+6,class:"glow"}));
-    g.appendChild(el("circle",{cx:d.x,cy:d.y,r:NR,class:"ring",filter:"url(#meshNsh)"}));
-    const ig=el("g",{transform:`translate(${d.x-12},${d.y-12})`}); ig.innerHTML=ICONS[d.icon]; g.appendChild(ig);
-    const sdot=el("circle",{cx:d.x+NR*0.72,cy:d.y-NR*0.72,r:5.5,class:"sdot",fill:"var(--ok)",stroke:"#fff","stroke-width":2}); g.appendChild(sdot); d.sdot=sdot;
-    const above=d.y<cy;
-    const lbl=el("text",{x:d.x,y:above?d.y-NR-14:d.y+NR+22,"text-anchor":"middle",class:"nlabel"}); lbl.textContent=d.name; g.appendChild(lbl);
-    const pill=el("text",{x:d.x,y:above?d.y-NR-30:d.y+NR+38,"text-anchor":"middle",class:"cx-pill",fill:"var(--warn)",opacity:0}); g.appendChild(pill); d.pill=pill;
-    g.addEventListener("click",()=>toggleNode(d.id));
-    gNodes.appendChild(g); d.g=g;
-  });
+    // hub
+    (function(){
+      const g=el("g",{});
+      [0,1,2].forEach(k=>{
+        const r=el("circle",{cx:cx,cy:cy,r:HR,fill:"none",stroke:"#ed7a23","stroke-width":2,opacity:0});
+        r.innerHTML=`<animate attributeName="r" values="${HR};${HR+70}" dur="2.6s" begin="${k*0.86}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.45;0" dur="2.6s" begin="${k*0.86}s" repeatCount="indefinite"/>`;
+        g.appendChild(r);
+      });
+      g.appendChild(el("circle",{cx:cx,cy:cy,r:HR,fill:"url(#meshHubG)",filter:"url(#meshHsh)"}));
+      const mg=el("g",{transform:`translate(${cx-15},${cy-15}) scale(1.25)`,stroke:"#fff","stroke-width":1.5,fill:"none","stroke-linecap":"round"});
+      mg.innerHTML='<circle cx="12" cy="6" r="2"/><circle cx="6" cy="16" r="2"/><circle cx="18" cy="16" r="2"/><path d="M10.5 7.6 7.4 14.3M13.5 7.6l3.1 6.7M8 16h8"/>';
+      g.appendChild(mg);
+      gNodes.appendChild(g);
+    })();
 
-  // packets (one per device)
-  devices.forEach(d=>{
-    const grp=el("g",{opacity:0});
-    grp.appendChild(el("circle",{r:7,fill:"var(--accent)",opacity:.16}));
-    grp.appendChild(el("circle",{r:3.4,fill:"var(--accent)"}));
-    gPackets.appendChild(grp);
-    d.pkt={el:grp,prog:Math.random()*0.6,poly:null,len:0};
-  });
+    // device nodes
+    const iconScale=NR/33;
+    devices.forEach(d=>{
+      const g=el("g",{class:"node","data-id":d.id});
+      g.appendChild(el("circle",{cx:d.x,cy:d.y,r:NR+6,class:"glow"}));
+      g.appendChild(el("circle",{cx:d.x,cy:d.y,r:NR,class:"ring",filter:"url(#meshNsh)"}));
+      const ig=el("g",{transform:`translate(${d.x-12*iconScale},${d.y-12*iconScale}) scale(${iconScale})`}); ig.innerHTML=ICONS[d.icon]; g.appendChild(ig);
+      const sdot=el("circle",{cx:d.x+NR*0.72,cy:d.y-NR*0.72,r:5.5,class:"sdot",fill:"var(--ok)",stroke:"#fff","stroke-width":2}); g.appendChild(sdot); d.sdot=sdot;
+      const above=d.y<cy;
+      const lbl=el("text",{x:d.x,y:above?d.y-NR-14:d.y+NR+22,"text-anchor":"middle",class:"nlabel"}); lbl.textContent=d.name; g.appendChild(lbl);
+      const pill=el("text",{x:d.x,y:above?d.y-NR-30:d.y+NR+38,"text-anchor":"middle",class:"cx-pill",fill:"var(--warn)",opacity:0}); g.appendChild(pill); d.pill=pill;
+      g.addEventListener("click",()=>toggleNode(d.id));
+      gNodes.appendChild(g); d.g=g;
+    });
 
-  // ---- rendering ----
+    // packets
+    devices.forEach(d=>{
+      const grp=el("g",{opacity:0});
+      grp.appendChild(el("circle",{r:7,fill:"var(--accent)",opacity:.16}));
+      grp.appendChild(el("circle",{r:3.4,fill:"var(--accent)"}));
+      gPackets.appendChild(grp);
+      d.pkt={el:grp,prog:Math.random()*0.6,poly:null,len:0};
+    });
+
+    recompute();
+  }
+
+  // ---- rendering helpers ----
   function polyOf(rt){
     const pts=rt.map(pos);
     let len=0; const cum=[0];
@@ -191,7 +206,6 @@
     if(time!==undefined) tEl.textContent=time;
   }
 
-  // ---- break marker ----
   function showBreak(x,y){
     const g=el("g",{transform:`translate(${x},${y})`,opacity:0});
     g.appendChild(el("circle",{r:11,fill:"var(--down-soft)",stroke:"var(--down)","stroke-width":1.5}));
@@ -284,7 +298,7 @@
     const dt=(now-last)/1000; last=now;
     const speed=190;
     devices.forEach(d=>{
-      const pk=d.pkt; if(!pk.poly){return;}
+      const pk=d.pkt; if(!pk||!pk.poly){return;}
       pk.prog += dt*speed;
       if(pk.prog>pk.poly.len) pk.prog=0;
       const p=ptAt(pk.poly,pk.prog);
@@ -293,7 +307,22 @@
     requestAnimationFrame(frame);
   }
 
-  recompute();
+  // ---- rebuild on breakpoint change ----
+  let wasMobile = window.innerWidth<=680;
+  let rzT=null;
+  window.addEventListener("resize",function(){
+    if(rzT) clearTimeout(rzT);
+    rzT=setTimeout(function(){
+      const m=window.innerWidth<=680;
+      if(m!==wasMobile){
+        wasMobile=m; L=makeLayout();
+        devices.forEach(d=>online[d.id]=true); downLinks.clear(); healingKeys=new Set();
+        build();
+      }
+    },220);
+  });
+
+  build();
   requestAnimationFrame(frame);
   startAuto();
 })();

@@ -531,8 +531,8 @@ input[type=range].hue{background:linear-gradient(90deg,#ef4444,#eab308,#22c55e,#
 .cx-flow .edge.devedge.active{stroke:var(--accent);stroke-width:2.6;}
 .cx-flow .dimmed{opacity:.32;transition:opacity .3s;}
 @media (max-width:880px){
-  .cx-svg{min-width:780px;}
-  .cx-scrollhint{display:flex;}
+  .cx-flow .cx-svg{min-width:780px;}
+  .cx-flow .cx-scrollhint{display:flex;}
 }
 @media (max-width:680px){
   .cx-flow{padding:30px 16px;}
@@ -542,6 +542,9 @@ input[type=range].hue{background:linear-gradient(90deg,#ef4444,#eab308,#22c55e,#
   .cx-stat{flex:1 1 calc(50% - 5px);min-width:0;}
   .cx-legend{gap:10px 16px;}
   .cx-leg.hint{margin-left:0;flex-basis:100%;}
+  /* data-flow: show the whole flow, fit to screen (no side-scroll) */
+  .cx-flow .cx-svg{min-width:0;}
+  .cx-flow .cx-scrollhint{display:none;}
 }
 
 /* =====================================================================
@@ -627,4 +630,7 @@ input[type=range].hue{background:linear-gradient(90deg,#ef4444,#eab308,#22c55e,#
   .cx-mesh .cx-stats{width:100%;}
   .cx-mesh .cx-stat{flex:1 1 calc(50% - 5px);min-width:0;}
   .cx-mesh .cx-narrate .t{display:none;}
+  /* mesh: portrait layout fits the screen — no side-scroll */
+  .cx-mesh .cx-svg{min-width:0;}
+  .cx-mesh .cx-scrollhint{display:none;}
 }
