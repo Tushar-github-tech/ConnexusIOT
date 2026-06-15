@@ -6,11 +6,11 @@
 <title>Connexus IoT — Smart control for every device</title>
 <meta name="description" content="Connexus IoT: control lights, ACs, coolers, fans, solar inverters and BMS from one secure app — with the lowest maintenance cost in the industry.">
 <meta name="theme-color" content="#ed7a23">
-<link rel="icon" type="image/png" href="assets/logo.png?v=12">
+<link rel="icon" type="image/png" href="assets/logo.png?v=13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=12">
+<link rel="stylesheet" href="css/style.css?v=13">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <a class="brand" href="#top" aria-label="Connexus home">
-    <img class="brand-wordmark" src="assets/wordmark.png?v=12" alt="Connexus">
+    <img class="brand-wordmark" src="assets/wordmark.png?v=13" alt="Connexus">
     <span class="brand-tag">Intelligent IoT Network</span>
   </a>
   <nav class="nav-links" id="navLinks">
@@ -67,27 +67,14 @@
       </div>
     </div>
 
-    <!-- clean hub visual -->
-    <div class="hub" aria-hidden="true">
-      <svg class="hub-lines" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet">
-        <g stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 6" class="hub-flow">
-          <line x1="180" y1="180" x2="60"  y2="70"/>
-          <line x1="180" y1="180" x2="300" y2="70"/>
-          <line x1="180" y1="180" x2="34"  y2="190"/>
-          <line x1="180" y1="180" x2="326" y2="190"/>
-          <line x1="180" y1="180" x2="80"  y2="306"/>
-          <line x1="180" y1="180" x2="280" y2="306"/>
-        </g>
-      </svg>
-      <div class="hub-ring r1"></div>
-      <div class="hub-ring r2"></div>
-      <div class="hub-core"><img src="assets/logo.png?v=12" alt="" class="hub-logo" id="holoLogo"></div>
-      <span class="pill" style="--x:60px;--y:70px">💡 Lights</span>
-      <span class="pill" style="--x:300px;--y:70px">❄️ AC</span>
-      <span class="pill" style="--x:34px;--y:190px">🌀 Fan</span>
-      <span class="pill" style="--x:326px;--y:190px">☀️ Solar</span>
-      <span class="pill" style="--x:80px;--y:306px">🔋 BMS</span>
-      <span class="pill" style="--x:280px;--y:306px">🫙 Mixer</span>
+    <!-- connected ecosystem: hub + orbiting devices -->
+    <div class="eco-stage" id="ecoStage">
+      <canvas class="eco-canvas" id="ecoPlex" aria-hidden="true"></canvas>
+      <svg class="eco-svg" id="ecoSvg" viewBox="0 0 920 520" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="eco-hub">
+        <span class="pulse"></span>
+        <img class="eco-hub-logo" src="assets/logo.png?v=13" alt="Connexus hub" id="holoLogo">
+      </div>
     </div>
   </div>
   <a href="#deck" class="scroll-hint" aria-label="Scroll to demo"><span></span></a>
@@ -296,15 +283,16 @@
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <div class="foot-brand">
-    <img src="assets/logo.png?v=12" alt="" class="brand-logo" id="footLogo">
+    <img src="assets/logo.png?v=13" alt="" class="brand-logo" id="footLogo">
     <span><span id="footName">Connexus</span> <em id="footSuffix">IoT</em></span>
   </div>
   <p>© <span id="year">2026</span> <span id="footCopy">Connexus IoT</span>. Connecting your world, securely.</p>
 </footer>
 
-<script src="js/config.js?v=12"></script>
-<script src="js/main.js?v=12"></script>
-<script src="js/dataflow.js?v=12"></script>
-<script src="js/selfheal.js?v=12"></script>
+<script src="js/config.js?v=13"></script>
+<script src="js/main.js?v=13"></script>
+<script src="js/dataflow.js?v=13"></script>
+<script src="js/selfheal.js?v=13"></script>
+<script src="js/ecosystem.js?v=13"></script>
 </body>
 </html>
