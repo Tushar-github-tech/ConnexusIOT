@@ -6,11 +6,11 @@
 <title>Connexus IoT — Smart control for every device</title>
 <meta name="description" content="Connexus IoT: control lights, ACs, coolers, fans, solar inverters and BMS from one secure app — with the lowest maintenance cost in the industry.">
 <meta name="theme-color" content="#ed7a23">
-<link rel="icon" type="image/png" href="assets/logo.png?v=9">
+<link rel="icon" type="image/png" href="assets/logo.png?v=10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=9">
+<link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <a class="brand" href="#top" aria-label="Connexus home">
-    <img class="brand-wordmark" src="assets/wordmark.png?v=9" alt="Connexus">
+    <img class="brand-wordmark" src="assets/wordmark.png?v=10" alt="Connexus">
     <span class="brand-tag">Intelligent IoT Network</span>
   </a>
   <nav class="nav-links" id="navLinks">
@@ -81,7 +81,7 @@
       </svg>
       <div class="hub-ring r1"></div>
       <div class="hub-ring r2"></div>
-      <div class="hub-core"><img src="assets/logo.png?v=9" alt="" class="hub-logo" id="holoLogo"></div>
+      <div class="hub-core"><img src="assets/logo.png?v=10" alt="" class="hub-logo" id="holoLogo"></div>
       <span class="pill" style="--x:60px;--y:70px">💡 Lights</span>
       <span class="pill" style="--x:300px;--y:70px">❄️ AC</span>
       <span class="pill" style="--x:34px;--y:190px">🌀 Fan</span>
@@ -136,38 +136,38 @@
     <div class="conn-card"><div class="conn-ico">🕸️</div><h3>BLE mesh</h3><p>Devices hop signals to each other for whole-home coverage, no new wiring.</p></div>
     <div class="conn-card"><div class="conn-ico">🛜</div><h3>Wi-Fi mesh</h3><p>High-bandwidth backbone that automatically self-heals if a node drops.</p></div>
   </div>
-  <div class="mesh-viz reveal" aria-hidden="true">
-    <svg viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet">
-      <g class="mesh-links" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 6">
-        <line x1="300" y1="110" x2="90"  y2="46"/>
-        <line x1="300" y1="110" x2="210" y2="36"/>
-        <line x1="300" y1="110" x2="390" y2="36"/>
-        <line x1="300" y1="110" x2="510" y2="50"/>
-        <line x1="300" y1="110" x2="120" y2="180"/>
-        <line x1="300" y1="110" x2="300" y2="196"/>
-        <line x1="300" y1="110" x2="480" y2="180"/>
-        <line x1="90"  y1="46"  x2="210" y2="36"/>
-        <line x1="210" y1="36"  x2="390" y2="36"/>
-        <line x1="390" y1="36"  x2="510" y2="50"/>
-        <line x1="120" y1="180" x2="300" y2="196"/>
-        <line x1="300" y1="196" x2="480" y2="180"/>
-      </g>
-      <circle cx="300" cy="110" r="10" fill="currentColor" opacity="0.25">
-        <animate attributeName="r" values="12;40" dur="2.6s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.35;0" dur="2.6s" repeatCount="indefinite"/>
-      </circle>
-      <g class="mesh-nodes">
-        <circle class="mesh-node" cx="90"  cy="46"  r="15"/><text x="90"  y="51"  class="mesh-emoji">💡</text>
-        <circle class="mesh-node" cx="210" cy="36"  r="15"/><text x="210" y="41"  class="mesh-emoji">❄️</text>
-        <circle class="mesh-node" cx="390" cy="36"  r="15"/><text x="390" y="41"  class="mesh-emoji">🌀</text>
-        <circle class="mesh-node" cx="510" cy="50"  r="15"/><text x="510" y="55"  class="mesh-emoji">☀️</text>
-        <circle class="mesh-node" cx="120" cy="180" r="15"/><text x="120" y="185" class="mesh-emoji">🔋</text>
-        <circle class="mesh-node" cx="480" cy="180" r="15"/><text x="480" y="185" class="mesh-emoji">🫙</text>
-        <circle class="mesh-node" cx="300" cy="196" r="15"/><text x="300" y="201" class="mesh-emoji">📱</text>
-        <circle class="mesh-node hub" cx="300" cy="110" r="19"/><text x="300" y="116" class="mesh-emoji hub-emoji">⬡</text>
-      </g>
-    </svg>
-    <span class="mesh-cap">Live mesh — self-healing &amp; encrypted</span>
+  <div class="cx-mesh reveal" id="cxMesh">
+    <div class="cx-head">
+      <div>
+        <span class="cx-badge"><span class="dot"></span>Live · Self-healing mesh</span>
+        <h2 class="cx-title">Drop a node — <b>the mesh heals itself</b></h2>
+        <p class="cx-sub">Every device is a relay. If a link or node goes down, Connexus instantly finds a new route — no dead zones, no manual fix. Every hop is AES-256 encrypted.</p>
+      </div>
+      <div class="cx-stats">
+        <div class="cx-stat"><div class="k">Mesh health</div><div class="v"><span id="stHealth">100</span><small>%</small></div></div>
+        <div class="cx-stat"><div class="k">Active links</div><div class="v"><span id="stLinks">14</span></div></div>
+        <div class="cx-stat"><div class="k">Avg hops</div><div class="v"><span id="stHops">1.0</span></div></div>
+        <div class="cx-stat"><div class="k">Last self-heal</div><div class="v"><span id="stHeal">0</span><small> ms</small></div></div>
+      </div>
+    </div>
+
+    <div class="cx-narrate info" id="cxNarrate">
+      <span class="ico" id="cxIco"></span>
+      <span class="msg" id="cxMsg">All nodes online · mesh fully connected</span>
+      <span class="t" id="cxTime">uptime 100%</span>
+    </div>
+
+    <div class="cx-scrollhint">Swipe to see the full mesh <span class="arrow">→</span></div>
+    <div class="cx-stage">
+      <svg class="cx-svg" id="cxMeshSvg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Self-healing mesh network"></svg>
+    </div>
+
+    <div class="cx-legend">
+      <div class="cx-leg"><span class="sw live"></span>Live route</div>
+      <div class="cx-leg"><span class="sw heal"></span>Just healed</div>
+      <div class="cx-leg"><span class="sw dead"></span>Down link</div>
+      <div class="cx-leg hint">Tap any node to take it offline · <b>auto-demo running</b></div>
+    </div>
   </div>
 </section>
 
@@ -296,14 +296,15 @@
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <div class="foot-brand">
-    <img src="assets/logo.png?v=9" alt="" class="brand-logo" id="footLogo">
+    <img src="assets/logo.png?v=10" alt="" class="brand-logo" id="footLogo">
     <span><span id="footName">Connexus</span> <em id="footSuffix">IoT</em></span>
   </div>
   <p>© <span id="year">2026</span> <span id="footCopy">Connexus IoT</span>. Connecting your world, securely.</p>
 </footer>
 
-<script src="js/config.js?v=9"></script>
-<script src="js/main.js?v=9"></script>
-<script src="js/dataflow.js?v=9"></script>
+<script src="js/config.js?v=10"></script>
+<script src="js/main.js?v=10"></script>
+<script src="js/dataflow.js?v=10"></script>
+<script src="js/selfheal.js?v=10"></script>
 </body>
 </html>

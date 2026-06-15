@@ -88,14 +88,14 @@
       canvas.style.width = W + "px";
       canvas.style.height = H + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var target = Math.min(120, Math.floor(W * H / 14000));
+      var target = Math.min(150, Math.floor(W * H / 11000));
       pts = [];
       for (var i = 0; i < target; i++) {
         pts.push({
           x: Math.random() * W, y: Math.random() * H,
           vx: (Math.random() - 0.5) * 0.35,
           vy: (Math.random() - 0.5) * 0.35,
-          r: 1 + Math.random() * 1.4
+          r: 1.3 + Math.random() * 1.6
         });
       }
     }
@@ -125,7 +125,7 @@
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = rgb(0.40);
+        ctx.fillStyle = rgb(0.62);
         ctx.fill();
 
         /* links between nearby nodes */
@@ -136,7 +136,7 @@
           if (d < linkDist) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = rgb(0.09 * (1 - d / linkDist));
+            ctx.strokeStyle = rgb(0.18 * (1 - d / linkDist));
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -149,7 +149,7 @@
           if (cd < mouseDist) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = rgb(0.30 * (1 - cd / mouseDist));
+            ctx.strokeStyle = rgb(0.55 * (1 - cd / mouseDist));
             ctx.lineWidth = 1;
             ctx.stroke();
           }
