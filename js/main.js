@@ -538,13 +538,14 @@
     var N = 52, POWER_MAX = 6; /* kW full-scale */
     var powerS = [], healthS = [], buf = [];
     for (var i = 0; i < N; i++) { powerS.push(0); healthS.push(0.34); }
-    var risk = 0, anomaly = 0;
+    var risk = 0, anomaly = 0, cxT = 0;
     var accent = cssVar("--accent", "#0891b2");
     var accent2 = cssVar("--accent2", "#2563eb");
     var C = 2 * Math.PI * 54;
 
     function tick() {
-      var kw = computeLoad().load / 1000;
+      cxT += 1;
+      var kw = Math.max(0, 2.6 + Math.sin(cxT / 8) * 1.0 + (Math.random() - 0.5) * 0.5); /* kW (simulated) */
       var stress = clamp01(kw / POWER_MAX);
 
       if (anomaly > 0) anomaly--;

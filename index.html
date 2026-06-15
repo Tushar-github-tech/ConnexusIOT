@@ -6,11 +6,11 @@
 <title>Connexus IoT — Smart control for every device</title>
 <meta name="description" content="Connexus IoT: control lights, ACs, coolers, fans, solar inverters and BMS from one secure app — with the lowest maintenance cost in the industry.">
 <meta name="theme-color" content="#ed7a23">
-<link rel="icon" type="image/png" href="assets/logo.png?v=8">
+<link rel="icon" type="image/png" href="assets/logo.png?v=9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <a class="brand" href="#top" aria-label="Connexus home">
-    <img class="brand-wordmark" src="assets/wordmark.png?v=8" alt="Connexus">
+    <img class="brand-wordmark" src="assets/wordmark.png?v=9" alt="Connexus">
     <span class="brand-tag">Intelligent IoT Network</span>
   </a>
   <nav class="nav-links" id="navLinks">
@@ -81,7 +81,7 @@
       </svg>
       <div class="hub-ring r1"></div>
       <div class="hub-ring r2"></div>
-      <div class="hub-core"><img src="assets/logo.png?v=8" alt="" class="hub-logo" id="holoLogo"></div>
+      <div class="hub-core"><img src="assets/logo.png?v=9" alt="" class="hub-logo" id="holoLogo"></div>
       <span class="pill" style="--x:60px;--y:70px">💡 Lights</span>
       <span class="pill" style="--x:300px;--y:70px">❄️ AC</span>
       <span class="pill" style="--x:34px;--y:190px">🌀 Fan</span>
@@ -93,173 +93,33 @@
   <a href="#deck" class="scroll-hint" aria-label="Scroll to demo"><span></span></a>
 </section>
 
-<!-- ================= LIVE CONTROL DECK ================= -->
+<!-- ================= LIVE DATA FLOW ================= -->
 <section class="section" id="deck">
-  <div class="sec-head reveal">
-    <span class="sec-tag">Live Demo</span>
-    <h2>Your devices, <span class="grad-text">one dashboard</span></h2>
-    <p>This is a real, working simulation of the Connexus app. Tap any control — it responds instantly.</p>
-  </div>
+  <div class="cx-flow" id="cxFlow">
+    <div class="cx-head">
+      <div>
+        <span class="cx-badge"><span class="dot"></span>Live · Real-time telemetry</span>
+        <h2 class="cx-title">Every device, <b>one secure stream</b></h2>
+        <p class="cx-sub">Devices talk to the Connexus Hub over the self-healing mesh, then reach you on two paths at once — the <b style="color:var(--accent-deep)">local network</b> for instant control and the <b style="color:var(--cloud-deep)">cloud</b> for access anywhere.</p>
+      </div>
+      <div class="cx-stats">
+        <div class="cx-stat"><div class="k">Online</div><div class="v"><span id="stOnline">7</span><small>/7</small></div></div>
+        <div class="cx-stat"><div class="k">Net load</div><div class="v"><span id="stLoad">0</span><small> W</small></div></div>
+        <div class="cx-stat"><div class="k">Local latency</div><div class="v"><span id="stLat">14</span><small> ms</small></div></div>
+        <div class="cx-stat"><div class="k">Packets / s</div><div class="v live"><span id="stPkt">0</span></div></div>
+      </div>
+    </div>
 
-  <!-- status strip -->
-  <div class="hud reveal">
-    <div class="hud-cell"><span class="hud-label">Devices online</span><b id="hudOnline">0 / 7</b></div>
-    <div class="hud-cell"><span class="hud-label">Total load</span><b><span id="hudLoad">0</span> W</b></div>
-    <div class="hud-cell"><span class="hud-label">Connection</span><b class="ok">🔒 256-bit secure</b></div>
-    <div class="hud-cell"><span class="hud-label">Session uptime</span><b id="hudUptime">00:00:00</b></div>
-  </div>
+    <div class="cx-legend">
+      <div class="cx-leg"><span class="sw local"></span>Local network · LAN control</div>
+      <div class="cx-leg"><span class="sw cloud"></span>Connexus Cloud · remote access</div>
+      <div class="cx-leg hint">Tap any device to trace its path · <b id="cxSel">auto-cycling</b></div>
+    </div>
 
-  <div class="deck-grid">
-
-    <!-- SMART LIGHT -->
-    <article class="dev reveal" id="card-light">
-      <div class="dev-top">
-        <h3>Smart Light</h3>
-        <label class="switch"><input type="checkbox" id="swLight" aria-label="Toggle smart light"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage">
-        <div class="bulb" id="bulb">
-          <div class="bulb-glow" id="bulbGlow"></div>
-          <svg viewBox="0 0 64 64" class="bulb-svg"><path d="M32 6c-11 0-19 8.4-19 18.6 0 6.8 3.6 11.2 6.7 15 2 2.4 3.3 5 3.8 7.4h17c.5-2.4 1.8-5 3.8-7.4 3.1-3.8 6.7-8.2 6.7-15C51 14.4 43 6 32 6z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M25 53h14M27 58h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-        </div>
-      </div>
-      <div class="dev-ctrl">
-        <label>Brightness <input type="range" id="lightBright" min="10" max="100" value="80" aria-label="Brightness"></label>
-        <label>Color <input type="range" id="lightHue" min="0" max="360" value="48" class="hue" aria-label="Light color"></label>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="light"></span><span id="lightWatt">0 W</span></footer>
-    </article>
-
-    <!-- AC -->
-    <article class="dev reveal" id="card-ac">
-      <div class="dev-top">
-        <h3>Air Conditioner</h3>
-        <label class="switch"><input type="checkbox" id="swAc" aria-label="Toggle air conditioner"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage ac-stage">
-        <div class="ac-unit">
-          <div class="ac-vent"></div>
-          <div class="ac-display" id="acTemp">24°C</div>
-        </div>
-        <div class="cold-waves" id="coldWaves"><i></i><i></i><i></i></div>
-      </div>
-      <div class="dev-ctrl ctrl-row">
-        <button class="step-btn" id="acMinus" aria-label="Temperature down">−</button>
-        <span class="ctrl-val" id="acTempLabel">24°C</span>
-        <button class="step-btn" id="acPlus" aria-label="Temperature up">+</button>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="ac"></span><span id="acWatt">0 W</span></footer>
-    </article>
-
-    <!-- FAN -->
-    <article class="dev reveal" id="card-fan">
-      <div class="dev-top">
-        <h3>Ceiling Fan</h3>
-        <label class="switch"><input type="checkbox" id="swFan" aria-label="Toggle ceiling fan"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage">
-        <svg viewBox="0 0 64 64" class="fan-svg" id="fanSvg">
-          <g class="fan-blades" id="fanBlades">
-            <path d="M32 32 C20 10 38 6 40 16 C41 22 36 28 32 32Z" fill="currentColor" opacity=".85"/>
-            <path d="M32 32 C54 20 58 38 48 40 C42 41 36 36 32 32Z" fill="currentColor" opacity=".85"/>
-            <path d="M32 32 C44 54 26 58 24 48 C23 42 28 36 32 32Z" fill="currentColor" opacity=".85"/>
-            <path d="M32 32 C10 44 6 26 16 24 C22 23 28 28 32 32Z" fill="currentColor" opacity=".85"/>
-          </g>
-          <circle cx="32" cy="32" r="5" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="dev-ctrl">
-        <label>Speed <input type="range" id="fanSpeed" min="1" max="5" value="3" aria-label="Fan speed"></label>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="fan"></span><span id="fanWatt">0 W</span></footer>
-    </article>
-
-    <!-- AIR COOLER -->
-    <article class="dev reveal" id="card-cooler">
-      <div class="dev-top">
-        <h3>Air Cooler</h3>
-        <label class="switch"><input type="checkbox" id="swCooler" aria-label="Toggle air cooler"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage">
-        <div class="cooler" id="coolerBox">
-          <div class="cooler-grill"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="water" id="water"></div>
-        </div>
-      </div>
-      <div class="dev-ctrl">
-        <label>Pump &amp; Swing <input type="range" id="coolerSpeed" min="1" max="3" value="2" aria-label="Cooler pump and swing"></label>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="cooler"></span><span id="coolerWatt">0 W</span></footer>
-    </article>
-
-    <!-- MIXER GRINDER -->
-    <article class="dev reveal" id="card-mixer">
-      <div class="dev-top">
-        <h3>Mixer Grinder</h3>
-        <label class="switch"><input type="checkbox" id="swMixer" aria-label="Toggle mixer grinder"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage">
-        <div class="mixer" id="mixerBox">
-          <div class="jar">
-            <svg viewBox="0 0 40 40" class="blade-svg"><g id="mixerBlades"><path d="M20 20 L34 14 M20 20 L6 26 M20 20 L26 34 M20 20 L14 6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></g><circle cx="20" cy="20" r="3.5" fill="currentColor"/></svg>
-          </div>
-          <div class="mixer-base"></div>
-        </div>
-      </div>
-      <div class="dev-ctrl ctrl-row seg" id="mixerSeg" role="group" aria-label="Mixer speed">
-        <button class="seg-btn active" data-speed="1">1</button>
-        <button class="seg-btn" data-speed="2">2</button>
-        <button class="seg-btn" data-speed="3">3</button>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="mixer"></span><span id="mixerWatt">0 W</span></footer>
-    </article>
-
-    <!-- SOLAR / POWER INVERTER -->
-    <article class="dev reveal" id="card-solar">
-      <div class="dev-top">
-        <h3>Solar Inverter</h3>
-        <label class="switch"><input type="checkbox" id="swSolar" aria-label="Toggle solar inverter"><span class="slider"></span></label>
-      </div>
-      <div class="dev-stage solar-stage">
-        <svg viewBox="0 0 200 80" class="flow-svg">
-          <g class="sun" id="sunIco"><circle cx="24" cy="26" r="10" fill="none" stroke="currentColor" stroke-width="2.5"/><g stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M24 8v6M24 38v6M6 26h6M36 26h6M11 13l4 4M33 35l4 4M37 13l-4 4M15 35l-4 4"/></g></g>
-          <path id="flowPath" d="M44 26 H92 V54 H198" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 8" class="flow-line"/>
-          <g transform="translate(96,30)"><rect x="0" y="0" width="34" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M10 12h14M17 5v14" stroke="currentColor" stroke-width="2" opacity=".6"/></g>
-          <g transform="translate(168,40)"><path d="M14 0 L28 14 H24 V28 H4 V14 H0 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></g>
-        </svg>
-        <div class="solar-readout"><b id="solarWattsBig">0.00</b> kW generating</div>
-      </div>
-      <div class="dev-ctrl ctrl-row seg" id="solarSeg" role="group" aria-label="Power source mode">
-        <button class="seg-btn active" data-mode="solar">Solar</button>
-        <button class="seg-btn" data-mode="hybrid">Hybrid</button>
-        <button class="seg-btn" data-mode="grid">Grid</button>
-      </div>
-      <footer class="dev-foot"><span class="led" data-led="solar"></span><span id="solarWatt">0 W</span></footer>
-    </article>
-
-    <!-- BMS -->
-    <article class="dev reveal dev-wide" id="card-bms">
-      <div class="dev-top">
-        <h3>Battery Management System</h3>
-        <span class="bms-badge" id="bmsState">● Live monitoring</span>
-      </div>
-      <div class="bms-body">
-        <div class="battery">
-          <div class="battery-cap"></div>
-          <div class="battery-fill" id="batteryFill"></div>
-          <b class="battery-pct" id="batteryPct">0%</b>
-        </div>
-        <div class="bms-cells" id="bmsCells"></div>
-        <div class="bms-meta">
-          <div><span>Voltage</span><b id="bmsVolt">51.2 V</b></div>
-          <div><span>Current</span><b id="bmsAmp">12.4 A</b></div>
-          <div><span>Temp</span><b id="bmsTemp">31.5°C</b></div>
-          <div><span>Health</span><b class="ok">98%</b></div>
-        </div>
-      </div>
-      <footer class="dev-foot"><span class="led on" data-led="bms"></span><span>Cell-level telemetry · 24×7</span></footer>
-    </article>
-
+    <div class="cx-scrollhint">Swipe to explore the full flow <span class="arrow">→</span></div>
+    <div class="cx-stage">
+      <svg class="cx-svg" id="cxSvg" viewBox="0 0 1248 740" preserveAspectRatio="xMidYMid meet" role="img" aria-label="IoT data flow diagram"></svg>
+    </div>
   </div>
 </section>
 
@@ -436,13 +296,14 @@
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <div class="foot-brand">
-    <img src="assets/logo.png?v=8" alt="" class="brand-logo" id="footLogo">
+    <img src="assets/logo.png?v=9" alt="" class="brand-logo" id="footLogo">
     <span><span id="footName">Connexus</span> <em id="footSuffix">IoT</em></span>
   </div>
   <p>© <span id="year">2026</span> <span id="footCopy">Connexus IoT</span>. Connecting your world, securely.</p>
 </footer>
 
-<script src="js/config.js?v=8"></script>
-<script src="js/main.js?v=8"></script>
+<script src="js/config.js?v=9"></script>
+<script src="js/main.js?v=9"></script>
+<script src="js/dataflow.js?v=9"></script>
 </body>
 </html>
