@@ -639,16 +639,19 @@
     startCounters();
     startReveal();
     startMenu();
-    setupLight();
-    setupAc();
-    setupFan();
-    setupCooler();
-    setupMixer();
-    setupSolar();
-    setupBms();
-    powerOnAll();
+    /* device control deck — only wire up if it's present on the page */
+    if (byId("swLight")) {
+      setupLight();
+      setupAc();
+      setupFan();
+      setupCooler();
+      setupMixer();
+      setupSolar();
+      setupBms();
+      powerOnAll();
+      startUptime();
+      updateHud();
+    }
     startAnalytics();
-    startUptime();
-    updateHud();
   });
 })();
